@@ -236,12 +236,22 @@ rmse
  -Calculate MAPE and accuracy
 
  ```
- from sklearn.metrics import mean_squared_error
-from math import sqrt
+sum_actuals = sum_errors = 0
 
-y_actual = y_test.values.flatten().tolist()
-rmse = sqrt(mean_squared_error(y_actual, y_predict))
-rmse
+for actual_val, predict_val in zip(y_actual, y_predict):
+    abs_error = actual_val - predict_val
+    if abs_error < 0:
+        abs_error = abs_error * -1
+
+    sum_errors = sum_errors + abs_error
+    sum_actuals = sum_actuals + actual_val
+
+mean_abs_percent_error = sum_errors / sum_actuals
+print("Model MAPE:")
+print(mean_abs_percent_error)
+print()
+print("Model Accuracy:")
+print(1 - mean_abs_percent_error)
 ```
 
 - sample output
